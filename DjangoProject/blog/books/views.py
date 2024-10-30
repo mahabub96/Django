@@ -106,6 +106,7 @@ class PublisherListCreateAPIView(APIView):
 #For Book
 class BookListCreateAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
         print(request.user)
         books = Book.objects.all()
