@@ -1,0 +1,169 @@
+<!-- templates/book_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .book-card {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            background-color: #fafafa;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .title {
+            font-size: 1.6em;
+            color: #007BFF;
+            margin: 0 0 10px 0;
+        }
+
+        .author, .publication-date, .description, .price {
+            color: #555;
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #28a745;
+            font-size: 1.2em;
+        }
+
+        .no-books {
+            text-align: center;
+            font-size: 1.5em;
+            color: #999;
+            margin-top: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Description read more */
+        .description-full {
+            display: none;
+            transition: max-height 0.5s ease;
+        }
+        
+        .read-more-btn {
+            color: #007BFF;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .book-card {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Book List</h1>
+        {% if books %}
+            <div class="book-grid">
+                {% for book in books %}
+                    <div class="book-card">
+                        <p class="title">{{ book.title }}</p>
+                        <p class="author">by {{ book.author.name }}</p>
+                        <p class="publication-date">Published on: {{ book.publication_date|date:"F j, Y" }}</p>
+                        <p class="description">
+                            Description: 
+                            <span class="description-preview">{{ book.description|truncatewords:10 }}</span>
+                            <span class="description-full">{{ book.description }}</span>
+                            <span class="read-more-btn" onclick="toggleDescription(this)">...Read more</span>
+                        </p>
+                        <p class="price">Price: ${{ book.price }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-books">No books available at this moment.</p>
+        {% endif %}
+    </div>
+
+    <script>
+        function toggleDescription(element) {
+            const descriptionPreview = element.previousElementSibling.previousElementSibling;
+            const descriptionFull = element.previousElementSibling;
+
+            if (descriptionFull.style.display === 'none' || descriptionFull.style.display === '') {
+                descriptionFull.style.display = 'inline';
+                descriptionPreview.style.display = 'none';
+                element.textContent = ' Read less';
+            } else {
+                descriptionFull.style.display = 'none';
+                descriptionPreview.style.display = 'inline';
+                element.textContent = '...Read more';
+            }
+        }
+    </script>
+</body>
+</html>

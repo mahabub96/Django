@@ -1,0 +1,22 @@
+settings.py->installed apps-> add app name.
+author_a = Author.objects.get(name="a")
+books_by_a = Book.objects.filter(author=author_a)
+
+
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.http import View
+
+def my_view(request):
+    def get(self,request)
+        return HttpResponse('Hello, World, Welcome to django')
+    
+
+
+
+from django.shortcuts import render
+from django.http import HttpResponse
+
+
+def my_view(request):
+    return HttpResponse('Hello, World, Welcome to django')
