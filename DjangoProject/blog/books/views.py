@@ -154,3 +154,21 @@ class BookGetUpdateDelete(mixins.CreateModelMixin,
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+    
+    
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
+from .models import Book
+from .serializers import BookSerializer
+
+class BookPagination(PageNumberPagination):
+    page_size = 5  # Customize the page size here
+    page_size_query_param = 'page_size'  # Allow clients to set their page size
+    max_page_size = 100  # Limit the maximum page size
+
+class BookApiListView(ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+   # pagination_class = BookPagination

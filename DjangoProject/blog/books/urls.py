@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from .views import AuthorListCreateAPIView, PublisherListCreateAPIView, BookListCreateAPIView, BookGetUpdateDelete, create_book
-from books.views import my_view, BookListView, MyView, ContactFormView
+from books.views import my_view, BookListView, MyView, ContactFormView, BookApiListView
 from django.shortcuts import render
 
 urlpatterns = [
@@ -16,5 +16,6 @@ urlpatterns = [
     path('publishers/', PublisherListCreateAPIView.as_view(), name='publisher-list-create'),
     path('contact_success/', lambda request: render(request, 'success/contact_success.html'), name='contact_success'),
     path('books_up/<int:pk>/', BookGetUpdateDelete.as_view(), name='book-detail'),
+    path('Api_list/', BookApiListView.as_view()),
     
 ]

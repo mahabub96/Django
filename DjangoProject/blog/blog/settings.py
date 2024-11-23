@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'books.middleware.CacheGETMiddleware',
 ]
 
 ROOT_URLCONF = 'blog.urls'
@@ -106,6 +107,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5, 
 }
 
 SIMPLE_JWT = {
@@ -117,6 +120,22 @@ SIMPLE_JWT = {
     'SIGNING_KEY': SECRET_KEY,
     'TOKEN_OBTAIN_SERIALIZER' : 'user.serializers.CustomClaimTokenObtainSerializer',
 }
+
+# settings.py
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',  # Redis server URL
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'books',
+    }
+}
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'  
+SESSION_CACHE_ALIAS = 'default'
+
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
